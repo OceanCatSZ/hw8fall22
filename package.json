@@ -1,0 +1,29 @@
+{
+  "name": "hw8-fall-22",
+  "version": "1.0.0",
+  "description": "## Notes",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest ./src/",
+    "start": "node ./src/main.js",
+    "prettier:fix": "npx prettier --write ./src/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umass-compsci-220/hw8-fall-22.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/umass-compsci-220/hw8-fall-22/issues"
+  },
+  "homepage": "https://github.com/umass-compsci-220/hw8-fall-22#readme",
+  "dependencies": {
+    "immutable": "^4.1.0",
+    "parsimmon": "^1.18.1"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "prettier": "^2.7.1"
+  }
+}
