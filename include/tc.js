@@ -35,23 +35,21 @@ function tcStmt(env, stmt) {
     return tcExpr(bound, stmt.expression).map(_ => ({ bound: bound.add(x), all: all.add(x) }));
   } else if (stmt.kind === "assignment") {
     const x = stmt.name;
-    if (bound.contains(x) === false) {
-      return result_1.error(`variable ${x} is not declared`);
-    }
+    // if (bound.contains(x) === false) {
+    //   return result_1.error(`variable ${x} is not declared`);
+    // }
     return tcExpr(bound, stmt.expression).map(_ => env);
   } else if (stmt.kind === "if") {
     return tcExpr(bound, stmt.test)
       .then(_ => tcBlock(env, stmt.truePart))
       .then(({ all }) => tcBlock({ bound, all }, stmt.falsePart))
       .map(({ all }) => ({ bound, all }));
-  }
-  // else if (stmt.kind === 'while') {
-  //     // NOTE(arjun): Same trick as above.
-  //     return tcExpr(bound, stmt.test)
-  //         .then(_ => tcBlock(env, stmt.body))
-  //         .map(({ all }) => ({ bound, all }));
-  // }
-  else if (stmt.kind === "print") {
+  } else if (stmt.kind === "while") {
+    // NOTE(arjun): Same trick as above.
+    return tcExpr(bound, stmt.test)
+      .then(_ => tcBlock(env, stmt.body))
+      .map(({ all }) => ({ bound, all }));
+  } else if (stmt.kind === "print") {
     return tcExpr(bound, stmt.expression).map(_ => env);
   } else {
     return result_1.unreachable("unhandled case in tcStmt");
