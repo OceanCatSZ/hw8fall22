@@ -136,7 +136,7 @@ A block starts a new inner scope. A variable declared in a block will shadow an 
 
 ### Error Handling
 
-An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, you should throw an error, using an informative error message. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
+An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Variable used before declaration")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
 
 ## File Overview
 
@@ -144,7 +144,11 @@ An interpreter can generally not continue meaningfully after an error (as oppose
 
 ## Programming Tasks
 
-Your task is to implement the following functions inside of `src/interpreter.js`. You may do them in any order. The inputs of these functions are abstract syntax trees, not concrete syntax. Therefore, you can run your code by using the parser, or by directly constructing ASTs by hand. If you are confused on how an expression or statement should evaluate, use the Node.js interpreter.
+Your task is to implement the following functions inside of `src/interpreter.js`. You may do them in any order. The inputs of these functions are abstract syntax trees (`object`), not concrete syntax (`string`). Therefore, you can run your code by using the parser, or by directly constructing ASTs by hand.
+
+The concrete syntax should be interpreted as if it were passed to the `node` interpreter (with a single exception). Type in the command `node` in your terminal (Terminal -> New Terminal) to activate a Read Eval Print Loop (REPL). There you can input statements and expressions. They will be fist evaluated, then their result will be printed (hence the name read, eval, print, loop).
+
+The only exception is as follows: _Variables cannot be used, or assigned to, before their declaration._
 
 ### `interpExpression`
 

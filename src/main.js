@@ -23,8 +23,8 @@ const program = `
 const result = parseProgram(program);
 
 if (result.ok) {
-  console.log(result.value);
   const state = interpProgram(result.value);
+  console.log(`Program terminated with state: ${state}`);
 } else {
   console.log("Parsing Error: " + result.message);
 }
