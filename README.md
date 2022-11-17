@@ -40,7 +40,7 @@ hw8-fall-22/
 
 ## Description
 
-For this project, you will writ an _interpreter_ for a small fragment of JavaScript. To write an interpreter, you need a parser to turn JavaScript's concrete syntax into an abstract syntax tree (as explained in class). You don't need to write a parser yourself. We have provided one for you.
+For this project, you will writ an _interpreter_ for a small programming language similar to JavaScript. To write an interpreter, you need a parser to turn the program's concrete syntax into an abstract syntax tree (as explained in class). You don't need to write a parser yourself. We have provided one for you (`).
 
 ## Learning Objectives
 
@@ -65,9 +65,9 @@ Students may be graded on:
 The following grammar describes the concrete syntax of the fragment of JavaScript that you will be working with:
 
 ```txt
-Numbers             n ::= ...                 numeric
+Numbers             n ::= ...                 numeric (positive and negative real numbers)
 
-Variables           x ::= ...                 variable name
+Variables           x ::= ...                 variable name (a sequence of uppercase or lowercase alphabetic letters)
 
 Expressions         e ::= n                   numeric constant
                       | true                  boolean value true
@@ -134,9 +134,19 @@ This notation indicates that a `State` object has a variable number of propertie
 
 A block starts a new inner scope. A variable declared in a block will shadow an outer declaration (any variable use will refer to the inner declaration). On exiting a scope, variables declared there are no longer accessible (since we don't have closures). Thus, they should not be in the global state at the end. The nesting of block scopes corresponds to a stack, which you can implement as a linked list, by adding to your `State` object a link to an outer scope. Since the link is just another property, this allows all functions to keep their signatures. To ensure the link name does not clash with a program variable, use a property name that is not an identifier (JavaScript allows this). The global state cannot have extra properties, but does not need a link, as the last state on the list.
 
+### Behavior
+
+The behavior of our interpreter should be similar to the `node` interpreter in "[strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)" (with some exceptions). To test what your interpreter should do in a scenario, you may use the `node --use-strict` command in a terminal to open a Read Eval Print Loop (REPL). This interface will allow you to input statements and expressions and will feedback errors or an evaluated result.
+
+Exceptions:
+
+- _Division by 0 is forbidden and should result in an error_
+- _Arithmetic and greater/less-than comparison may only happen between numbers_
+- _Logical operations may only happen between booleans_
+
 ### Error Handling
 
-An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Variable used before declaration")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
+An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Division by 0 is forbidden")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
 
 ## File Overview
 
@@ -145,10 +155,6 @@ An interpreter can generally not continue meaningfully after an error (as oppose
 ## Programming Tasks
 
 Your task is to implement the following functions inside of `src/interpreter.js`. You may do them in any order. The inputs of these functions are abstract syntax trees (`object`), not concrete syntax (`string`). Therefore, you can run your code by using the parser, or by directly constructing ASTs by hand.
-
-The concrete syntax should be interpreted as if it were passed to the `node` interpreter (with a single exception). Type in the command `node` in your terminal (Terminal -> New Terminal) to activate a Read Eval Print Loop (REPL). There you can input statements and expressions. They will be fist evaluated, then their result will be printed (hence the name read, eval, print, loop).
-
-The only exception is as follows: _Variables cannot be used, or assigned to, before their declaration._
 
 ### `interpExpression`
 
