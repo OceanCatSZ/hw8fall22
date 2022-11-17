@@ -1,3 +1,5 @@
+"use strict";
+
 const assert = require("assert");
 const { parseExpression, parseProgram } = require("../include/parser");
 const { interpExpression, interpProgram, interpStatement } = require("./interpreter");
