@@ -166,7 +166,7 @@ interpExpression(state: State, e: Expr): number | boolean
 
 ### `interpStatement`
 
-Given a state object and an AST of a statement, `interpStatement` updates the `State` object and returns nothing.
+Given a state object and an AST of a statement, `interpStatement` updates the `State` object and returns it.
 
 ```ts
 interpStatement(state: State, p: Stmt): State
