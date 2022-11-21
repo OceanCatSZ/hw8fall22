@@ -140,13 +140,13 @@ The behavior of our interpreter should be similar to the `node` interpreter in "
 
 Exceptions:
 
-- _Division by 0 is forbidden and should result in an error_
+- ~~Division by 0 is forbidden and should result in an error~~
 - _Arithmetic and greater/less-than comparison may only happen between numbers_
 - _Logical operations may only happen between booleans_
 
 ### Error Handling
 
-An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Division by 0 is forbidden")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
+An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Arithmetic may only happen between numbers")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
 
 ## File Overview
 
