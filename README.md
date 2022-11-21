@@ -169,7 +169,7 @@ interpExpression(state: State, e: Expr): number | boolean
 Given a state object and an AST of a statement, `interpStatement` updates the `State` object and returns nothing.
 
 ```ts
-interpStatement(state: State, p: Stmt): void
+interpStatement(state: State, p: Stmt): State
 ```
 
 ### `interpProgram`
