@@ -13,11 +13,13 @@
 hw8-fall-22/
   node_modules/
   include/
-    parser.js
   src/
+    interpreter.js
+    interpreter.test.js
     main.js
   package-lock.json
   package.json
+  build.js
 ```
 
 ## Index
@@ -40,7 +42,7 @@ hw8-fall-22/
 
 ## Description
 
-For this project, you will writ an _interpreter_ for a small programming language similar to JavaScript. To write an interpreter, you need a parser to turn the program's concrete syntax into an abstract syntax tree (as explained in class). You don't need to write a parser yourself. We have provided one for you (`).
+For this project, you will writ an _interpreter_ for a small programming language similar to JavaScript. To write an interpreter, you need a parser to turn the program's concrete syntax into an abstract syntax tree (as explained in class). You don't need to write a parser yourself. We have provided one for you.
 
 ## Learning Objectives
 
@@ -65,7 +67,7 @@ Students may be graded on:
 The following grammar describes the concrete syntax of the fragment of JavaScript that you will be working with:
 
 ```txt
-Numbers             n ::= ...                 numeric (positive and negative real numbers)
+Numbers             n ::= ...                 numeric (positive and negative real numbers, NaN, +/-Infinity?)
 
 Variables           x ::= ...                 variable name (a sequence of uppercase or lowercase alphabetic letters)
 
@@ -136,7 +138,7 @@ A block starts a new inner scope. A variable declared in a block will shadow an 
 
 ### Behavior
 
-The behavior of our interpreter should be similar to the `node` interpreter in "[strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)" (with some exceptions). To test what your interpreter should do in a scenario, you may use the `node --use-strict` command in a terminal to open a Read Eval Print Loop (REPL). This interface will allow you to input statements and expressions and will feedback errors or an evaluated result.
+The behavior of our interpreter should be similar to the `node` interpreter in "[strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)" (with some exceptions). To test what your interpreter should do in a scenario, you may use the `node --use-strict` command in a terminal to open a Read Eval Print Loop (REPL). This interface will allow you to input statements and expressions and will display an error or an the evaluated result.
 
 Exceptions:
 
@@ -196,7 +198,7 @@ interpProgram([
     name: "x",
     expression: {
       kind: "operator",
-      op: "_",
+      op: "*",
       e1: { kind: "variable", name: "x" },
       e2: { kind: "number", value: 2 },
     },
@@ -215,7 +217,7 @@ Implement `interpExpression`, following the template shown in class. You can use
 ```js
 const assert = require("assert");
 
-test("multiplication with a variable", function () {
+test("multiplication with a variable", () => {
   const r = interpExpression({ x: 10 }, parseExpression("x * 2").value);
 
   assert(r === 20);
@@ -227,7 +229,7 @@ Implement `interpStatement` and `interpProgram`, following the template shown in
 ```js
 const assert = require("assert");
 
-test("assignment", function () {
+test("assignment", () => {
   const st = interpProgram(parseProgram("let x = 10; x = 20;").value);
 
   assert(st.x === 20);
@@ -252,21 +254,17 @@ test("sqrt fails on invalid input", () => {
 });
 ```
 
-Notice that we passed a function that calls `sqrt` with invalid input. If we just passed the function call with invalid input, our test would fail (because `sqrt(-1)` would throw) before the testing framework could capture that error and verify we were actually expecting it to error (`.Throw()`).
+Notice that we passed a function that calls `sqrt` with invalid input. If we just passed the function call with invalid input, our test would fail (because `sqrt(-1)` would throw) before the testing framework could capture that error and verify we were actually expecting it to error (`.toThrow()`).
 
 You can read more on the [Jest documentation on `.toThrow()`](https://jestjs.io/docs/expect#tothrowerror).
 
 ## Submitting
 
-- Run `npm run prettier:fix`
+- Run `npm run build`
 - Login to Gradescope
 - Open the assignment submission popup
   - Click the assignment
 - Open your file explorer and navigate to the folder of the project
   - This is the folder that immediately contains: `node_modules`, `src/`, `package.json`, `package-lock.json`
-- Drag and drop the `src/` folder into the submission box
+- Drag and drop the generated `hw8-submission.zip` into Gradescope
 - Click upload
-
-Your submission window should look like the following. **It should not contain any more or any less files.**
-
-![Submission](./submission.png)
