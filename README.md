@@ -42,7 +42,7 @@ hw8-fall-22/
 
 ## Description
 
-For this project, you will writ an _interpreter_ for a small programming language similar to JavaScript. To write an interpreter, you need a parser to turn the program's concrete syntax into an abstract syntax tree (as explained in class). You don't need to write a parser yourself. We have provided one for you.
+For this project, you will write an [_interpreter_](<https://en.wikipedia.org/wiki/Interpreter_(computing)>) for a small programming language similar to JavaScript. To write an interpreter, you need a parser to turn the program's concrete syntax into an abstract syntax tree (AST; as explained in class). You don't need to write a parser yourself. We have provided one for you. You will then traverse the AST making necessary checks and executing corresponding statements and expressions.
 
 ## Learning Objectives
 
@@ -100,7 +100,7 @@ Programs            p ::= s1 ... sn
 
 ### Parser
 
-We have provided two parsing functions the function `parseExpression` parses an expression ($e$) and the function `parseProgram` parses a program ($p$). Their type signatures are documented below:
+We have provided two parsing functions the function `parseExpression` parses an expression ($$e$$) and the function `parseProgram` parses a program ($$p$$). Their type signatures are documented below:
 
 ```ts
 type Result<T> = { ok: true, value: T } | { ok: false, message: string };
@@ -160,7 +160,7 @@ Your task is to implement the following functions inside of `src/interpreter.js`
 
 ### `interpExpression`
 
-Given a state object and an AST of an expression as arguments, `interpExpression` returns the result of the expression (number or boolean).
+Given a state object and an AST of an expression as arguments, `interpExpression` returns the result of the expression (number or boolean). It should throw an error if the statement is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling))
 
 ```ts
 interpExpression(state: State, e: Expr): number | boolean
@@ -168,7 +168,7 @@ interpExpression(state: State, e: Expr): number | boolean
 
 ### `interpStatement`
 
-Given a state object and an AST of a statement, `interpStatement` updates the `State` object and returns it.
+Given a state object and an AST of a statement, `interpStatement` updates the `State` object and returns it. It should throw an error if the statement is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling)).
 
 ```ts
 interpStatement(state: State, p: Stmt): State
@@ -176,7 +176,7 @@ interpStatement(state: State, p: Stmt): State
 
 ### `interpProgram`
 
-Given the AST of a program, `interpProgram` returns the final state of the program
+Given the AST of a program, `interpProgram` returns the final state of the program. It should throw an error if any statement of expression is invalid. It should throw an error if the statement is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling)).
 
 ```ts
 interpProgram(p: Stmt[]): State
@@ -265,6 +265,6 @@ You can read more on the [Jest documentation on `.toThrow()`](https://jestjs.io/
 - Open the assignment submission popup
   - Click the assignment
 - Open your file explorer and navigate to the folder of the project
-  - This is the folder that immediately contains: `node_modules`, `src/`, `package.json`, `package-lock.json`
+  - This is the folder that immediately contains: `hw8-submission.zip`, `node_modules`, `src/`, `package.json`, `package-lock.json`
 - Drag and drop the generated `hw8-submission.zip` into Gradescope
 - Click upload
