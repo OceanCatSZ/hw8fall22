@@ -4,7 +4,7 @@
   "description": "## Notes",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest ./src/",
+    "test": "npx jest",
     "start": "node ./src/main.js",
     "prettier:fix": "npx prettier --write ./src/**/*.js",
     "prebuild": "npm run prettier:fix",
