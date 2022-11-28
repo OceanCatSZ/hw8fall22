@@ -32,7 +32,6 @@ hw8-fall-22/
   - [Parser](#parser)
   - [State](#state)
   - [Error Handling](#error-handling)
-- [File Overview](#file-overview)
 - [Programming Tasks](#programming-tasks)
   - [interpExpression](#interpexpression)
   - [interpStatement](#interpstatement)
