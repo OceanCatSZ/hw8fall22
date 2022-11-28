@@ -1,7 +1,7 @@
 "use strict";
 
-const { parseProgram } = require("../include/parser");
-const { interpProgram } = require("./interpreter");
+const { parseProgram } = require("../include/parser.js");
+const { interpProgram } = require("./interpreter.js");
 
 const program = `
   let n = 20;
