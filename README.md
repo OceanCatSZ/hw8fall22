@@ -150,9 +150,9 @@ Exceptions:
 
 An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Arithmetic may only happen between numbers")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
 
-## File Overview
-
 ## Resources
+
+- [Accessing Object Fields in Vanilla JavaScript](https://github.com/umass-compsci-220/hw6-fall-22#accessing-fields-in-vanilla-javascript)
 
 ## Programming Tasks
 
