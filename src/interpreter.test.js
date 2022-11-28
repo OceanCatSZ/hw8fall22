@@ -2,11 +2,7 @@
 
 const assert = require("assert");
 const { parseExpression, parseProgram } = require("../include/parser");
-const {
-  interpExpression,
-  interpProgram,
-  interpStatement,
-} = require("./interpreter");
+const { interpExpression, interpProgram, interpStatement } = require("./interpreter");
 
 test("interpExpression interprets multiplication with a variable", () => {
   const r = interpExpression({ x: 10 }, parseExpression("x * 2").value);
