@@ -1,8 +1,8 @@
 "use strict";
 
 const assert = require("assert");
-const { parseExpression, parseProgram } = require("../include/parser");
-const { interpExpression, interpProgram, interpStatement } = require("./interpreter");
+const { parseExpression, parseProgram } = require("../include/parser.js");
+const { interpExpression, interpProgram, interpStatement } = require("./interpreter.js");
 
 test("interpExpression interprets multiplication with a variable", () => {
   const r = interpExpression({ x: 10 }, parseExpression("x * 2").value);
