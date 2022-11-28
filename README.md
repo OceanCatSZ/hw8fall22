@@ -67,7 +67,7 @@ Students may be graded on:
 The following grammar describes the concrete syntax of the fragment of JavaScript that you will be working with:
 
 ```txt
-Numbers             n ::= ...                 numeric (positive and negative real numbers, NaN, +/-Infinity?)
+Numbers             n ::= ...                 numeric (positive and negative integer numbers)
 
 Variables           x ::= ...                 variable name (a sequence of uppercase or lowercase alphabetic letters)
 
@@ -96,11 +96,11 @@ Blocks               b ::= { s1 ... sn }
 Programs            p ::= s1 ... sn
 ```
 
-`Numbers` and `Variables` have been omitted for simplicity. However, you may assume that they are structured the same as they are in JavaScript.
+`Numbers` and `Variables` have been omitted for simplicity. However, you may assume that they are structured the same as they are in JavaScript. The parser does not accept real numbers, `Infinity` or `NaN`, but your interpreter should produce these as expression results where JavaScript would. The parser only accepts identifiers formed of letters.
 
 ### Parser
 
-We have provided two parsing functions the function `parseExpression` parses an expression ($$e$$) and the function `parseProgram` parses a program ($$p$$). Their type signatures are documented below:
+We have provided two parsing functions the function `parseExpression` parses an expression (`e`) and the function `parseProgram` parses a program (`p`). Their type signatures are documented below:
 
 ```ts
 type Result<T> = { ok: true, value: T } | { ok: false, message: string };
@@ -142,7 +142,6 @@ The behavior of our interpreter should be similar to the `node` interpreter in "
 
 Exceptions:
 
-- ~~Division by 0 is forbidden and should result in an error~~
 - _Arithmetic and greater/less-than comparison may only happen between numbers_
 - _Logical operations may only happen between booleans_
 
@@ -150,9 +149,9 @@ Exceptions:
 
 An interpreter can generally not continue meaningfully after an error (as opposed to compilers). Thus, if you find an error, **you should throw an error, using an informative error message (i.e. "Arithmetic may only happen between numbers")**. You need to do a number of checks (e.g., correct typing, and missing or duplicate declarations). You may assume that an AST has the right fields and types. **Do can not assume other checks**, even if done by the parser, as your functions can be tested with ASTs that don’t come from the parser.
 
-## Resources
+## File Overview
 
-- [Accessing Object Fields in Vanilla JavaScript](https://github.com/umass-compsci-220/hw6-fall-22#accessing-fields-in-vanilla-javascript)
+## Resources
 
 ## Programming Tasks
 
