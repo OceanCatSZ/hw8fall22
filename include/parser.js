@@ -12,8 +12,9 @@ function token(name_tok) {
 function operator(name_op) {
   return P.string(name_op).skip(ws);
 }
-let num = P.regexp(/-?(0|[1-9][0-9]+)(\.[0-9]+)?/)
-  .desc("number")
+
+let num = P.regexp(/-?[0-9]+/)
+  .desc("integer")
   .skip(ws)
   .map(str => a.number(Number(str)));
 let name = P.regexp(/[A-Za-z]+/)
