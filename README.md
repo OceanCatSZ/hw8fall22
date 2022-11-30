@@ -104,14 +104,12 @@ We have provided two parsing functions the function `parseExpression` parses an 
 ```ts
 type Result<T> = { ok: true, value: T } | { ok: false, message: string };
 type BinOp = "+" | "-" | "*" | "/" | "&&" | "||" | ">" | "<" | "===";
-type Expr =
-  | { kind: "boolean"; value: boolean }
+type Expr = { kind: "boolean"; value: boolean }
   | { kind: "number"; value: number }
   | { kind: "variable"; name: string }
   | { kind: "operator"; op: BinOp; e1: Expr; e2: Expr };
 
-type Stmt =
-  | { kind: "let"; name: string; expression: Expr }
+type Stmt = { kind: "let"; name: string; expression: Expr }
   | { kind: "assignment"; name: string; expression: Expr }
   | { kind: "if"; test: Expr; truePart: Stmt[]; falsePart: Stmt[] }
   | { kind: "while"; test: Expr; body: Stmt[] }
