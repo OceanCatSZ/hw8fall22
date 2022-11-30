@@ -158,7 +158,7 @@ Your task is to implement the following functions inside of `src/interpreter.js`
 
 ### `interpExpression`
 
-Given a state object and an AST of an expression as arguments, `interpExpression` returns the result of the expression (number or boolean). It should throw an error if the statement is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling))
+Given a state object and an AST of an expression as arguments, `interpExpression` returns the result of the expression (number or boolean). It should throw an error if the expression is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling))
 
 ```ts
 interpExpression(state: State, e: Expr): number | boolean
