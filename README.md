@@ -172,7 +172,7 @@ interpStatement(state: State, p: Stmt): State
 
 ### `interpProgram`
 
-Given the AST of a program, `interpProgram` returns the final state of the program. It should throw an error if any statement of expression is invalid. It should throw an error if the statement is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling)).
+Given the AST of a program, `interpProgram` returns the final state of the program. It should throw an error if any statement or expression is invalid (see [Behavior](#behavior) and [Error Handling](#error-handling)).
 
 ```ts
 interpProgram(p: Stmt[]): State
