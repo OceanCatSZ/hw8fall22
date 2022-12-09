@@ -84,15 +84,23 @@ function assignValue(state, name, value) {
     state[name] = value;
     return;
   }
-  throw new Error("please initialize this variable first");
+  else {
+    if ("outer" in state) {
+      return assignValue(state["outer"], name, value);
+    }
+    else {
+      throw new Error("please initialize this variable first");
+    }
+  }
 }
 
 function interpWhile(state, test, body) {
+  let tempState = {outer: state}
   if (interpExpression(state, test) === false) {
     return state;
   } 
   else {
-    body.forEach((s) => interpStatement(state, s));
+    body.forEach((s) => interpStatement(tempState, s));
     return interpWhile(state, test, body);
   }
 }
@@ -110,9 +118,9 @@ function interpStatement(state, stmt) {
   } 
   else if (stmt.kind === "assignment") {
     assert(typeof stmt.name === "string", "variable's name should be a string");
-    let tempState = findVariableInParentState(state, stmt.name);
-    let value = interpExpression(tempState, stmt.expression);
-    assignValue(tempState, stmt.name, value);
+    //let tempState = findVariableInParentState(state, stmt.name);
+    let value = interpExpression(state, stmt.expression);
+    assignValue(state, stmt.name, value);
     return state;
   } 
   else if (stmt.kind === "if") {

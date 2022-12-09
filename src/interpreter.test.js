@@ -30,7 +30,7 @@ test("scoping is correct", () => {
 
 test("while loop is correct", () => {
   const w = interpProgram(
-    parseProgram("let x = 0; while (x < 5) {x = x + 1;}").value
+    parseProgram("let x = 0; while (x < 5) {let y = 1; x = x + 1;}").value
   );
   assert((w.x = 5));
 });
