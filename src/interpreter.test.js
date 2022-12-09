@@ -6,9 +6,9 @@ const { interpExpression, interpProgram, interpStatement } = require("./interpre
 
 test("interpExpression interprets multiplication with a variable", () => {
   const r = interpExpression({ x: 10 }, parseExpression("x * 2").value);
-
   assert(r === 20);
 });
+//test("interpExpression interprets addition with a variable");
 
 test("interpProgram interprets basic declaration then assignment", () => {
   const st = interpProgram(parseProgram("let x = 10; x = 20;").value);
