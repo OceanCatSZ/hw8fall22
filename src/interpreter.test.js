@@ -12,6 +12,10 @@ test("interpExpression interprets multiplication with a variable", () => {
 
 test("interpProgram interprets basic declaration then assignment", () => {
   const st = interpProgram(parseProgram("let x = 10; x = 20;").value);
-
   assert(st.x === 20);
+});
+
+test("scoping is correct", () => {
+  const p = interpProgram(parseProgram("let x = 1; if (x === 1) {x = 2; let x = 2;} else {let x = 3;}").value);
+  assert(p.x === 2);
 });

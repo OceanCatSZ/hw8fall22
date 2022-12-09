@@ -1,10 +1,25 @@
 "use strict";
 
-function getvalue(state, name) {
+const assert = require("assert");
+
+function findVariableInParentState(state, name) {
   if (name in state) {
-    return state.name;
+    return state;
   }
-  assert(false);
+  else {
+    if ("outer" in state) {
+      state = state["outer"];
+      return findVariableInParentState(state, name);
+    }
+    else {
+      throw new Error("please initialize this variable first");
+    }
+  }
+}
+
+function getvalue(state, name) {
+  state = findVariableInParentState(state, name);
+  return state[name];
 }
 
 function interpExpression(state, e) {
@@ -15,57 +30,122 @@ function interpExpression(state, e) {
   else if (e.kind === "variable") {
     return getvalue(state, e.name);
   }
-  else if (e.kind === "operator ") {
+  else if (e.kind === "operator") {
     let v1 = interpExpression(state, e.e1)
     let v2 = interpExpression(state, e.e2)
     if (e.op === "+") {
-      assert(v1.type === "number" && v2.type ==="number");
-      return v1 + v2;
+      assert(typeof v1 === "number" && typeof v2 === "number", "operation + can only happen between numbers.");      return v1 + v2;
     }
     else if (e.op === "-") {
-      assert(v1.type === "number" && v2.type ==="number");
-      return v1 - v2;
+      assert(typeof v1 === "number" && typeof v2 === "number", "operation - can only happen between numbers.");      return v1 - v2;
     }
     else if (e.op === "*") {
-      assert(v1.type === "number" && v2.type ==="number");
+      assert(typeof v1 === "number" && typeof v2 === "number", "operation * can only happen between numbers.");
       return v1 * v2;
     }
     else if (e.op === "/") {
-      assert(v1.type === "number" && v2.type ==="number");
-      return v1/v2;
+      assert(typeof v1 === "number" && typeof v2 === "number", "operation / can only happen between numbers.");      return v1/v2;
     }
     else if (e.op === "&&") {
-      assert(v1.type === "boolean" && v2.type ==="boolean");
+      assert(typeof v1 === "boolean" && typeof v2 === "boolean", "operation && can only happen between booleans");
       return v1 && v2;
     }
     else if (e.op === "||") {
-      assert(v1.type === "boolean" && v2.type ==="boolean");
+      assert(typeof v1 === "boolean" && typeof v2 === "boolean", "operation || can only happen between booleans");
       return v1 || v2;
     }
     else if (e.op === "<") {
-      assert(v1.type === "number" && v2.type ==="number");
+      assert(typeof v1 === "boolean" && typeof v2 === "boolean", "operation < can only happen between booleans");
       return v1 < v2;
     }
     else if (e.op === ">") {
-      assert(v1.type === "number" && v2.type ==="number");
+      assert(typeof v1 === "boolean" && typeof v2 === "boolean", "operation > can only happen between booleans");
       return v1 > v2;
     }
     else if (e.op === "===") {
-      assert(typeof v1 === typeof v2);
+      assert(typeof v1 === typeof v2, "operation === can only happen between two object with the same type");
       return v1 === v2;
     }
     else {
-      assert(false);
+      throw new Error("Unidentified operand.");
     }
+  }
+}
+
+function setValue(state, name, value) {
+  state[name] = value;
+}
+
+function assignValue(state, name, value) {
+  if (name in state) {
+    state[name] = value;
+    return;
+  }
+  throw new Error("please initialize this variable first");
+}
+
+function interpWhile(state, test, body) {
+  if (interpExpression(state, test) === false) {
+    return;
+  }
+  else {
+    body.forEach(s => interpStatement(state, s));
+    interpWhile(state, test, body);
   }
 }
 
 function interpStatement(state, stmt) {
   // TODO
+  if (stmt.kind === "let") {
+    assert(typeof stmt.name === "string", "variable's name should be a string.");
+    if (stmt.name in state) {
+      throw new Error("variable already exist.");
+    }
+    let value = interpExpression(state, stmt.expression);
+    setValue(state, stmt.name, value);
+    return state;
+  }
+  else if (stmt.kind === "assignment") {
+    assert(typeof stmt.name === "string", "variable's name should be a string");
+    let tempState = findVariableInParentState(state, stmt.name);
+    let value = interpExpression(tempState, stmt.expression);
+    assignValue(tempState, stmt.name, value);
+    return state;
+  }
+  else if (stmt.kind === "if") {
+    let condition = interpExpression(state, stmt.test);
+    let ifState = {outer: state};
+    if (condition === true) {
+      let stmtArr = stmt.truePart;
+      stmtArr.forEach(s => interpStatement(ifState, s));
+      return state;
+    }
+    else {
+      stmtArr = stmt.falsePart;
+      stmtArr.forEach(s => interpStatement(ifState, s));
+      return state;
+    }
+  }
+  else if (stmt.kind === "while") {
+    let test = stmt.test;
+    let body = stmt.body;
+    interpWhile(state, test, body);
+    return state;
+  }
+  else if (stmt.kind === "print") {
+    console.log(interpExpression(state, stmt.expression));
+    return state;
+  }
+  else {
+    throw new Error("statement invalid.");
+  }
 }
 
 function interpProgram(stmts) {
   // TODO
+  let state = {};
+  stmts.map(s => interpStatement(state, s));
+  return state;
 }
 
 // DO NOT REMOVE
