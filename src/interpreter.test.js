@@ -9,8 +9,8 @@ const {
 } = require("./interpreter.js");
 
 test("interpExpression interprets multiplication with a variable", () => {
-  const r = interpExpression({ x: 10 }, parseExpression("x * 2").value);
-  assert(r === 20);
+  const r = interpExpression({ x: 1.5 }, parseExpression("x * 2").value);
+  assert(r === 3);
 });
 //test("interpExpression interprets addition with a variable");
 
@@ -22,7 +22,7 @@ test("interpProgram interprets basic declaration then assignment", () => {
 test("scoping is correct", () => {
   const p = interpProgram(
     parseProgram(
-      "let x = 1; if (x === 1) {x = 2; let x = 2;} else {let x = 3;}"
+      "let x = 1; if (x === 1) {x = 2; let x = 5;} else {let x = 3;}"
     ).value
   );
   assert(p.x === 2);

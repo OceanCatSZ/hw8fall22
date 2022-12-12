@@ -4,7 +4,7 @@ const { parseProgram } = require("../include/parser.js");
 const { interpProgram } = require("./interpreter.js");
 
 const program = `
-  let n = 20;
+  let n = 6000;
 
   let a = 1;
   let b = 1; 

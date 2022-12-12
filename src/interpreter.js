@@ -2,13 +2,36 @@
 
 const assert = require("assert");
 
+function validityOfNames(name) {
+  function isNumber(num) {
+    return typeof Number(num) === "number" && !isNaN(num);
+  }
+  function isLetter(c) {
+    return c.toUpperCase() !== c.toLowerCase();
+  }
+  function isSpecial(s) {
+    return s === "$" || s === "_";
+  }
+  for (let i = 0; i < name.length; ++i) {
+    let cur = name[i];
+    if (i === 0) {
+      if (isNumber(cur)) {
+        return false;
+      }
+    }
+    if (!isNumber(cur) && !isLetter(cur) && !isSpecial(cur)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function findVariableInParentState(state, name) {
   if (name in state) {
     return state;
   } else {
-    if ("outer" in state) {
-      state = state["outer"];
-      return findVariableInParentState(state, name);
+    if ("outer-scope" in state) {
+      return findVariableInParentState(state["outer-scope"], name);
     } else {
       throw new Error("please initialize this variable first");
     }
@@ -22,9 +45,15 @@ function getvalue(state, name) {
 
 function interpExpression(state, e) {
   // TODO
-  if (e.kind === "number" || e.kind === "boolean") {
+  if (e.kind === "number") {
+    if (Math.floor(e.value) !== e.value) {
+      throw new Error("number is not an integer");
+    }
+    return e.value;
+  } else if (e.kind === "boolean") {
     return e.value;
   } else if (e.kind === "variable") {
+    assert(validityOfNames(e.name) === true, "name is invalid");
     return getvalue(state, e.name);
   } else if (e.kind === "operator") {
     let v1 = interpExpression(state, e.e1);
@@ -78,10 +107,6 @@ function interpExpression(state, e) {
       );
       return v1 > v2;
     } else if (e.op === "===") {
-      assert(
-        typeof v1 === typeof v2,
-        "operation === can only happen between two object with the same type"
-      );
       return v1 === v2;
     } else {
       throw new Error("Unidentified operand.");
@@ -98,8 +123,8 @@ function assignValue(state, name, value) {
     state[name] = value;
     return;
   } else {
-    if ("outer" in state) {
-      return assignValue(state["outer"], name, value);
+    if ("outer-scope" in state) {
+      return assignValue(state["outer-scope"], name, value);
     } else {
       throw new Error("please initialize this variable first");
     }
@@ -107,8 +132,10 @@ function assignValue(state, name, value) {
 }
 
 function interpWhile(state, test, body) {
-  let tempState = { outer: state };
-  if (interpExpression(state, test) === false) {
+  let tempState = { "outer-scope": state };
+  let condition = interpExpression(state, test);
+  //assert(typeof condition === "boolean", "condition should be boolean");
+  if (condition === false) {
     return state;
   } else {
     body.forEach((s) => interpStatement(tempState, s));
@@ -123,6 +150,7 @@ function interpStatement(state, stmt) {
       typeof stmt.name === "string",
       "variable's name should be a string."
     );
+    assert(validityOfNames(stmt.name) === true, "name is invalid");
     if (stmt.name in state) {
       throw new Error("variable already exist.");
     }
@@ -131,13 +159,15 @@ function interpStatement(state, stmt) {
     return state;
   } else if (stmt.kind === "assignment") {
     assert(typeof stmt.name === "string", "variable's name should be a string");
+    assert(validityOfNames(stmt.name) === true, "name is invalid");
     //let tempState = findVariableInParentState(state, stmt.name);
     let value = interpExpression(state, stmt.expression);
     assignValue(state, stmt.name, value);
     return state;
   } else if (stmt.kind === "if") {
     let condition = interpExpression(state, stmt.test);
-    let ifState = { outer: state };
+    //assert(typeof condition === "boolean", "condition should be boolean");
+    let ifState = { "outer-scope": state };
     if (condition === true) {
       let stmtArr = stmt.truePart;
       stmtArr.forEach((s) => interpStatement(ifState, s));
